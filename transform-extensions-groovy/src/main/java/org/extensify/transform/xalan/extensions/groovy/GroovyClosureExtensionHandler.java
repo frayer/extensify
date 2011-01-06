@@ -39,12 +39,12 @@ public class GroovyClosureExtensionHandler extends BasicExtensionHandler {
         return elementClosures.containsKey(name);
     }
 
-    public void addFunctionClosure(Closure closure) {
-        functionClosures.put("", new GroovyExtensionFunction(closure));
+    public void addFunctionClosure(String name, Closure closure) {
+        functionClosures.put(name, new GroovyExtensionFunction(closure));
     }
 
-    public void addElementClosure(Closure closure) {
-        elementClosures.put("", new GroovyExtensionElement(closure));
+    public void addElementClosure(String name, Closure closure) {
+        elementClosures.put(name, new GroovyExtensionElement(closure));
     }
 
 }
