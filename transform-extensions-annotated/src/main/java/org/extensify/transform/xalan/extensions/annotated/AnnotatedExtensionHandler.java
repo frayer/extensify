@@ -1,9 +1,7 @@
 package org.extensify.transform.xalan.extensions.annotated;
 
 import org.extensify.transform.xalan.extensions.BasicExtensionHandler;
-import org.extensify.transform.xalan.extensions.*;
 import org.extensify.transform.xalan.extensions.CallableExtensionFunction;
-import org.extensify.transform.xalan.extensions.MethodCallableExtensionElement;
 import org.extensify.transform.xalan.extensions.CallableExtensionElement;
 
 import java.lang.reflect.Method;

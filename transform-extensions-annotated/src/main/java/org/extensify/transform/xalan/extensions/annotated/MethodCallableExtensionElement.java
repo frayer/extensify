@@ -1,8 +1,9 @@
-package org.extensify.transform.xalan.extensions;
+package org.extensify.transform.xalan.extensions.annotated;
 
 import org.apache.xalan.templates.ElemTemplateElement;
 import org.apache.xalan.templates.Stylesheet;
 import org.apache.xalan.transformer.TransformerImpl;
+import org.extensify.transform.xalan.extensions.CallableExtensionElement;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

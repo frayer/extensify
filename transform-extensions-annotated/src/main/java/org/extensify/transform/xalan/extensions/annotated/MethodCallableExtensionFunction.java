@@ -1,6 +1,7 @@
-package org.extensify.transform.xalan.extensions;
+package org.extensify.transform.xalan.extensions.annotated;
 
 import org.apache.xalan.extensions.ExpressionContext;
+import org.extensify.transform.xalan.extensions.CallableExtensionFunction;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
