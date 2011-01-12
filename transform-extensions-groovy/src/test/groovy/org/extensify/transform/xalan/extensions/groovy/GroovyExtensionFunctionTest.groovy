@@ -8,11 +8,11 @@ class GroovyExtensionFunctionTest {
 
   @Test
   void testReturnValue() {
-    def stringReturnClosure = { expressionContext, arg1, arg2, arg3 ->
+    def stringReturnClosure = { ExpressionContext expressionContext, arg1, arg2, arg3 ->
       "closure called"
     }
 
-    def additionClosure = { expressionContext, arg1, arg2, arg3 ->
+    def additionClosure = { ExpressionContext expressionContext, arg1, arg2, arg3 ->
       arg1 + arg2 + arg3
     }
 

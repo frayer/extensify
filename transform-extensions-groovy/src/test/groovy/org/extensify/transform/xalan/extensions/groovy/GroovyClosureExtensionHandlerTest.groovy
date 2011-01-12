@@ -5,6 +5,7 @@ import org.junit.Test
 import static org.junit.Assert.*
 import org.apache.xalan.templates.ElemTemplateElement
 import static org.mockito.Mockito.*
+import org.apache.xalan.extensions.ExpressionContext
 
 class GroovyClosureExtensionHandlerTest {
 
@@ -45,7 +46,7 @@ class GroovyClosureExtensionHandlerTest {
     handler.addElementClosure("set-variable") { templateElement, stylesheet, methodKey ->
       vars[templateElement.getAttribute("name")] = templateElement.getAttribute("value")
     }
-    handler.addFunctionClosure("variable") { expressionContext, varName ->
+    handler.addFunctionClosure("variable") { ExpressionContext expressionContext, varName ->
       vars[varName]
     }
 

@@ -17,15 +17,23 @@ public class GroovyExtensionFunction implements CallableExtensionFunction {
     }
 
     public Object call(ExpressionContext expressionContext, Object... args) {
-        /*
-         * Create a new argument list with the "expressionContext" variable as the
-         * first argument.
-         */
-        List<Object> arguments = new ArrayList<Object>(args.length + 1);
-        arguments.addAll(Arrays.asList((args)));
-        arguments.add(0, expressionContext);
+        List<Object> arguments = null;
 
-        return closure.call(arguments);
+        Class[] paramTypes = closure.getParameterTypes();
+        if (paramTypes[0] == ExpressionContext.class) {
+            /*
+             * Create a new argument list with the "expressionContext" variable as the
+             * first argument.
+             */
+            arguments = new ArrayList<Object>(args.length + 1);
+            arguments.addAll(Arrays.asList((args)));
+            arguments.add(0, expressionContext);
+        } else {
+            arguments = new ArrayList<Object>(args.length);
+            arguments.addAll(Arrays.asList(args));
+        }
+
+        return closure.call(arguments.toArray());
     }
 
 }

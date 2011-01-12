@@ -9,6 +9,7 @@ import org.apache.xalan.templates.ElemTemplateElement
 import org.custommonkey.xmlunit.XMLAssert
 import org.junit.Before
 import org.junit.Test
+import org.apache.xalan.extensions.ExpressionContext
 
 class ClosureExtensibleXalanTransformerTest {
 
@@ -30,20 +31,7 @@ class ClosureExtensibleXalanTransformerTest {
     closureTransformer = new ClosureExtensibleXalanTransformer(transformer)
   }
 
-  @Test
-  void testNothing() {
-    def variables = [:]
-
-    closureTransformer.addExtensionFunction(EXTENSION_TEST_NS, "variable") { context, name ->
-      variables[name]
-    }
-
-    closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { ElemTemplateElement elemTemplateElement, transformer, stylesheet ->
-      def name = elemTemplateElement.getAttribute('name')
-      def value = elemTemplateElement.getAttribute('value')
-      variables[name] = value
-    }
-
+  def runAndAssertPeopleTransformation() {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
     StreamResult result = new StreamResult(outputStream)
 
@@ -55,4 +43,36 @@ class ClosureExtensibleXalanTransformerTest {
     XMLAssert.assertXMLEqual(expectedXML, transformedXML)
   }
 
+  @Test
+  void testGroovyExtensions() {
+    def variables = [:]
+
+    closureTransformer.addExtensionFunction(EXTENSION_TEST_NS, "variable") { ExpressionContext context, name ->
+      variables[name]
+    }
+    closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { ElemTemplateElement elemTemplateElement, transformer, stylesheet ->
+      def name = elemTemplateElement.getAttribute('name')
+      def value = elemTemplateElement.getAttribute('value')
+      variables[name] = value
+    }
+
+    runAndAssertPeopleTransformation()
   }
+
+  @Test
+  void testGroovyExtensionsNoExpressionContextOnFunction() {
+    def variables = [:]
+
+    closureTransformer.addExtensionFunction(EXTENSION_TEST_NS, "variable") { name ->
+      variables[name]
+    }
+    closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { ElemTemplateElement elemTemplateElement, transformer, stylesheet ->
+      def name = elemTemplateElement.getAttribute('name')
+      def value = elemTemplateElement.getAttribute('value')
+      variables[name] = value
+    }
+
+    runAndAssertPeopleTransformation()
+  }
+
+}
