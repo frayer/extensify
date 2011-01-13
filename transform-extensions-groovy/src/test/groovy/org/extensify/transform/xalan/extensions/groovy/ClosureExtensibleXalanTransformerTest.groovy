@@ -60,16 +60,14 @@ class ClosureExtensibleXalanTransformerTest {
   }
 
   @Test
-  void testGroovyExtensionsNoExpressionContextOnFunction() {
+  void testGroovyExtensionsNoXalanClassesInClosureParameters() {
     def variables = [:]
 
     closureTransformer.addExtensionFunction(EXTENSION_TEST_NS, "variable") { name ->
       variables[name]
     }
-    closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { ElemTemplateElement elemTemplateElement, transformer, stylesheet ->
-      def name = elemTemplateElement.getAttribute('name')
-      def value = elemTemplateElement.getAttribute('value')
-      variables[name] = value
+    closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { args ->
+      variables[args['name']] = args['value']
     }
 
     runAndAssertPeopleTransformation()
