@@ -14,7 +14,7 @@ import java.util.Properties;
 public class ExtensibleXalanTransformer extends Transformer {
 
     private TransformerImpl baseTransformer = null;
-    protected ExtensionHandlerRegistrar extensionHandlerRegistrar = null;
+    private ExtensionHandlerRegistrar extensionHandlerRegistrar = null;
 
     public ExtensibleXalanTransformer(TransformerImpl baseTransformer) {
         this.baseTransformer = baseTransformer;
