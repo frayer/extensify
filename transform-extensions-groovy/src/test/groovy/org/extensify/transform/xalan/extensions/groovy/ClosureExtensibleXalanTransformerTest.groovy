@@ -13,31 +13,42 @@ import org.apache.xalan.extensions.ExpressionContext
 
 class ClosureExtensibleXalanTransformerTest {
 
+  private static final String XML_XSL_ROOT_PATH = "/org/extensify/transform/xalan/extensions/groovy/"
   private static final String EXTENSION_TEST_NS = "http://www.xsltextensions.org/extensions"
-  private static final String XSL_PATH = "/org/extensify/transform/xalan/extensions/groovy/people_xform.xsl"
-  private static final String XML_PATH = "/org/extensify/transform/xalan/extensions/groovy/people.xml"
-  private static final String EXPECTED_XML_PATH = "/org/extensify/transform/xalan/extensions/groovy/people_expected.xml"
 
-  ClosureExtensibleXalanTransformer closureTransformer = null
   Source xmlSource = null
   Source xslSource = null
 
   @Before
   void setUp() {
-    xmlSource = new StreamSource(ClosureExtensibleXalanTransformerTest.class.getResourceAsStream(XML_PATH))
-    xslSource = new StreamSource(ClosureExtensibleXalanTransformerTest.class.getResourceAsStream(XSL_PATH))
-
-    def transformer = TransformerFactory.newInstance().newTransformer(xslSource)
-    closureTransformer = new ClosureExtensibleXalanTransformer(transformer)
   }
 
-  def runAndAssertPeopleTransformation() {
+  private ClosureExtensibleXalanTransformer createTransformer(xslFileName) {
+    def xslPath = XML_XSL_ROOT_PATH + xslFileName
+    def xslSource = new StreamSource(ClosureExtensibleXalanTransformerTest.class.getResourceAsStream(xslPath))
+
+    def transformer = TransformerFactory.newInstance().newTransformer(xslSource)
+    new ClosureExtensibleXalanTransformer(transformer)
+  }
+
+  private Source getXMLSourceFromFile(String xmlFileName) {
+    def xmlPath = XML_XSL_ROOT_PATH + xmlFileName
+    new StreamSource(ClosureExtensibleXalanTransformerTest.getClass().getResourceAsStream(xmlPath))
+  }
+
+  private String getXMLString(xmlFileName) {
+    def xmlPath = XML_XSL_ROOT_PATH + xmlFileName
+    IOUtils.toString(ClosureExtensibleXalanTransformerTest.getClass().getResourceAsStream(xmlPath))
+  }
+
+  def runAndAssertPeopleTransformation(transformer, inputXMLFileName, expectedXMLFileName) {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
     StreamResult result = new StreamResult(outputStream)
 
-    closureTransformer.transform(xmlSource, result)
+    def xmlSource = getXMLSourceFromFile("people.xml")
+    transformer.transform(xmlSource, result)
 
-    def expectedXML = IOUtils.toString(ClosureExtensibleXalanTransformerTest.class.getResourceAsStream(EXPECTED_XML_PATH))
+    def expectedXML = getXMLString(expectedXMLFileName)
     def transformedXML = outputStream.toString()
 
     XMLAssert.assertXMLEqual(expectedXML, transformedXML)
@@ -45,6 +56,7 @@ class ClosureExtensibleXalanTransformerTest {
 
   @Test
   void testGroovyExtensions() {
+    def closureTransformer = createTransformer("people_xform.xsl")
     def variables = [:]
 
     closureTransformer.addExtensionFunction(EXTENSION_TEST_NS, "variable") { ExpressionContext context, name ->
@@ -56,11 +68,12 @@ class ClosureExtensibleXalanTransformerTest {
       variables[name] = value
     }
 
-    runAndAssertPeopleTransformation()
+    runAndAssertPeopleTransformation(closureTransformer, "people.xml", "people_expected.xml")
   }
 
   @Test
   void testGroovyExtensionsNoXalanClassesInClosureParameters() {
+    def closureTransformer = createTransformer("people_xform.xsl")
     def variables = [:]
 
     closureTransformer.addExtensionFunction(EXTENSION_TEST_NS, "variable") { name ->
@@ -70,7 +83,7 @@ class ClosureExtensibleXalanTransformerTest {
       variables[args['name']] = args['value']
     }
 
-    runAndAssertPeopleTransformation()
+    runAndAssertPeopleTransformation(closureTransformer, "people.xml", "people_expected.xml")
   }
 
 }
