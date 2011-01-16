@@ -9,6 +9,12 @@ import java.util.Vector;
 public class ExtensionNamespacesManagerUtil {
 
     /**
+     * Private constructor since this is a utility class.
+     */
+    private ExtensionNamespacesManagerUtil() {
+    }
+
+    /**
      * Re-registers an ExtensionNamespaceSupport object even if the namespace it supports has
      * already been registered previously. Effectively this overrides any previous
      * <code>ExtensionNamespaceSupport</code> object defined for a given namespace.
