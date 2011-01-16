@@ -95,23 +95,32 @@ class ClosureExtensibleXalanTransformerTest {
     def closureTransformer = createTransformer("people_xform_testNodeListOfExtensionElement.xsl")
 
     def variables = [:]
-    NodeList foundNodeList = null
+    NodeList extensionWithChildElementNodeList = null
+    def extensionWithChildElementNameAttribute
+    def extensionWithChildElementValueAttribute
 
     closureTransformer.addExtensionFunction(EXTENSION_TEST_NS, "variable") { name ->
       variables[name]
     }
-    closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { attributes, nodeList ->
+    closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { attributes ->
       variables[attributes['name']] = attributes['value']
-      foundNodeList = nodeList
+    }
+    closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "extension-with-childElement") { attributes, nodeList ->
+      extensionWithChildElementNameAttribute = attributes['name']
+      extensionWithChildElementValueAttribute = attributes['value']
+      extensionWithChildElementNodeList = nodeList
     }
 
     runAndAssertPeopleTransformation(closureTransformer, "people.xml", "people_expected.xml")
 
     // Validate details about the NodeList passed into the "set-variable" Extension Element.
-    assertNotNull(foundNodeList)
-    assertEquals(1, foundNodeList.length)
+    assertEquals("var://context/foo3", extensionWithChildElementNameAttribute)
+    assertEquals("third set variable", extensionWithChildElementValueAttribute)
 
-    Node firstLevelNode = foundNodeList.item(0)
+    assertNotNull(extensionWithChildElementNodeList)
+    assertEquals(1, extensionWithChildElementNodeList.length)
+
+    Node firstLevelNode = extensionWithChildElementNodeList.item(0)
     assertEquals("firstLevel", firstLevelNode.nodeName)
 
     NodeList firstLevelChildren = firstLevelNode.getChildNodes();

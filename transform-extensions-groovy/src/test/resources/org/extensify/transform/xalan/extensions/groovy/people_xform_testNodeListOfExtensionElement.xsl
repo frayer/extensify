@@ -6,11 +6,11 @@
     <xsl:template match="/">
         <ext:set-variable name="var://context/foo1" value="first set variable"/>
         <ext:set-variable name="var://context/foo2" value="second set variable"/>
-        <ext:set-variable name="var://context/foo3" value="third set variable">
+        <ext:extension-with-childElement name="var://context/foo3" value="third set variable">
             <firstLevel>
                 <secondLevel>text node value</secondLevel>
             </firstLevel>
-        </ext:set-variable>
+        </ext:extension-with-childElement>
         <names>
             <dpVariables>
                 <foo1>
