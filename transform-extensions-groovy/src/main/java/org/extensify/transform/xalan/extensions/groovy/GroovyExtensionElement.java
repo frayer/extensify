@@ -27,26 +27,48 @@ public class GroovyExtensionElement implements CallableExtensionElement {
          *      TransformerImpl
          *      Stylesheet
          *
-         * Otherwise a map of element attributes passed available in ElemTemplateElement will be
-         * collected and sent to the Closure as a single argument.
+         * If the number of parameters available in the Closure is 2, the convention is that the
+         * Closure will be called with a map of attribute name/value pairs which are available in
+         * ElemTemplateElement, and also the NodeList of any child elements of the extension
+         * element.
+         *
+         * If the number of parameters available in the Closure is 1, the convention is that the
+         * Closure will be called with just the map of attribute name/value pairs which are
+         * available in ElemTemplateElement.
          */
-        if (closure.getMaximumNumberOfParameters() == 3) {
+        int maximumNumberOfParameters = closure.getMaximumNumberOfParameters();
+        if (maximumNumberOfParameters == 3) {
             return closure.call(new Object[]{elemTemplateElement, transformer, stylesheet});
-        } else if (closure.getMaximumNumberOfParameters() == 1) {
-            NamedNodeMap namedNodeMap = elemTemplateElement.getAttributes();
-            Map<String, Object> arguments = new HashMap<String, Object>(namedNodeMap.getLength());
-            for (int item = 0; item < namedNodeMap.getLength(); item++) {
-                Node node = namedNodeMap.item(item);
-                String argumentName = node.getNodeName();
-                Object argumentValue = node.getNodeValue();
-                arguments.put(argumentName, argumentValue);
-            }
-
-            return closure.call(arguments);
+        } else if (maximumNumberOfParameters == 2) {
+            Map<String, Object> attributeMap = buildAttributeMap(elemTemplateElement);
+            return closure.call(new Object[]{attributeMap, elemTemplateElement.getChildNodes()});
+        } else if (maximumNumberOfParameters == 1) {
+            Map<String, Object> attributeMap = buildAttributeMap(elemTemplateElement);
+            return closure.call(attributeMap);
         } else {
             // TODO: Throw a InvalidClosureParameter Exception here.
             return null;
         }
+    }
+
+    /**
+     * Builds a map of name/value pairs for attributes available on the elemTemplateElement passed
+     * in.
+     *
+     * @param elemTemplateElement the object to gather attributes from.
+     * @return the Map of attribute name/value pairs.
+     */
+    private Map<String, Object> buildAttributeMap(ElemTemplateElement elemTemplateElement) {
+        NamedNodeMap namedNodeMap = elemTemplateElement.getAttributes();
+        Map<String, Object> attributeMap = new HashMap<String, Object>(namedNodeMap.getLength());
+        for (int item = 0; item < namedNodeMap.getLength(); item++) {
+            Node node = namedNodeMap.item(item);
+            String attributeName = node.getNodeName();
+            Object attributeValue = node.getNodeValue();
+            attributeMap.put(attributeName, attributeValue);
+        }
+
+        return attributeMap;
     }
 
 }
