@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <names>
-<dpVariables>
-<foo1>first set variable</foo1>
-<foo2>second set variable</foo2>
-</dpVariables>
-<firstNames>
-<firstName>Foo</firstName>
-<firstName>Buddy</firstName>
-</firstNames>
-<lastNames>
-<lastName>Bar</lastName>
-<lastName>Lee</lastName>
-</lastNames>
+    <dpVariables>
+        <foo1>first set variable</foo1>
+        <foo2>second set variable</foo2>
+    </dpVariables>
+    <firstNames>
+        <firstName>Foo</firstName>
+        <firstName>Buddy</firstName>
+    </firstNames>
+    <lastNames>
+        <lastName>Bar</lastName>
+        <lastName>Lee</lastName>
+    </lastNames>
 </names>
