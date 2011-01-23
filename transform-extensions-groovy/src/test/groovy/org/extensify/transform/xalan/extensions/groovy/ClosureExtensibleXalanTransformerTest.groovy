@@ -7,15 +7,16 @@ import javax.xml.transform.stream.StreamSource
 import org.apache.commons.io.IOUtils
 import org.apache.xalan.extensions.ExpressionContext
 import org.apache.xalan.templates.ElemTemplateElement
-import org.custommonkey.xmlunit.XMLAssert
+import org.apache.xalan.templates.Stylesheet
+import org.apache.xalan.transformer.TransformerImpl
 import org.junit.Before
 import org.junit.Test
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
 import static junit.framework.Assert.assertEquals
 import static junit.framework.Assert.assertNotNull
-import org.apache.xalan.templates.Stylesheet
-import org.apache.xalan.transformer.TransformerImpl
+import static org.extensify.matchers.XMLStringMatcher.equalToXMLStringIgnoringWhitespace
+import static org.hamcrest.MatcherAssert.assertThat
 
 class ClosureExtensibleXalanTransformerTest {
 
@@ -57,7 +58,7 @@ class ClosureExtensibleXalanTransformerTest {
     def expectedXML = getXMLString(expectedXMLFileName)
     def transformedXML = outputStream.toString()
 
-    XMLAssert.assertXMLEqual(expectedXML, transformedXML)
+    assertThat(expectedXML, equalToXMLStringIgnoringWhitespace(transformedXML))
   }
 
   @Test
