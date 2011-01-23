@@ -14,6 +14,8 @@ import org.w3c.dom.Node
 import org.w3c.dom.NodeList
 import static junit.framework.Assert.assertEquals
 import static junit.framework.Assert.assertNotNull
+import org.apache.xalan.templates.Stylesheet
+import org.apache.xalan.transformer.TransformerImpl
 
 class ClosureExtensibleXalanTransformerTest {
 
@@ -66,7 +68,7 @@ class ClosureExtensibleXalanTransformerTest {
     closureTransformer.addExtensionFunction(EXTENSION_TEST_NS, "variable") { ExpressionContext context, name ->
       variables[name]
     }
-    closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { ElemTemplateElement elemTemplateElement, transformer, stylesheet ->
+    closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { ElemTemplateElement elemTemplateElement, TransformerImpl transformer, Stylesheet stylesheet ->
       def name = elemTemplateElement.getAttribute('name')
       def value = elemTemplateElement.getAttribute('value')
       variables[name] = value

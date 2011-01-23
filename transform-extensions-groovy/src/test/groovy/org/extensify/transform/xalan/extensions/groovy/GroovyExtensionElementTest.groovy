@@ -2,13 +2,16 @@ package org.extensify.transform.xalan.extensions.groovy
 
 import org.junit.Test
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*
+import org.apache.xalan.templates.ElemTemplateElement
+import org.apache.xalan.templates.Stylesheet
+import org.apache.xalan.transformer.TransformerImpl;
 
 class GroovyExtensionElementTest {
 
   @Test
   void testReturnValue() {
-    def stringReturnClosure = {elemTemplateElement, transformer, stylesheet ->
+    def stringReturnClosure = { ElemTemplateElement elemTemplateElement, TransformerImpl transformer, Stylesheet stylesheet ->
       "closure called"
     }
 

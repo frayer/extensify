@@ -37,7 +37,7 @@ public class GroovyExtensionElement implements CallableExtensionElement {
          * available in ElemTemplateElement.
          */
         int maximumNumberOfParameters = closure.getMaximumNumberOfParameters();
-        if (maximumNumberOfParameters == 3) {
+        if (isUsingXalanSignature(closure.getParameterTypes())) {
             return closure.call(new Object[]{elemTemplateElement, transformer, stylesheet});
         } else if (maximumNumberOfParameters == 2) {
             Map<String, Object> attributeMap = buildAttributeMap(elemTemplateElement);
@@ -49,6 +49,27 @@ public class GroovyExtensionElement implements CallableExtensionElement {
             // TODO: Throw a InvalidClosureParameter Exception here.
             return null;
         }
+    }
+
+    /**
+     * Returns true if the types in the Class array are the following 3 types in the given order.
+     * Otherwise it returns false.
+     *
+     * ElemTemplateElement
+     * TransformerImpl
+     * Stylesheet
+     *
+     * @param types
+     * @return
+     */
+    private boolean isUsingXalanSignature(Class[] types) {
+        if ((types.length == 3)
+                && ElemTemplateElement.class.isAssignableFrom(types[0])
+                && TransformerImpl.class.isAssignableFrom(types[1])
+                && Stylesheet.class.isAssignableFrom(types[2])) {
+            return true;
+        }
+        return false;
     }
 
     /**

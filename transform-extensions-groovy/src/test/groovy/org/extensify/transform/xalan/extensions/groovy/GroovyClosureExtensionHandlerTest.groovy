@@ -6,6 +6,8 @@ import static org.junit.Assert.*
 import org.apache.xalan.templates.ElemTemplateElement
 import static org.mockito.Mockito.*
 import org.apache.xalan.extensions.ExpressionContext
+import org.apache.xalan.transformer.TransformerImpl
+import org.apache.xalan.templates.Stylesheet
 
 class GroovyClosureExtensionHandlerTest {
 
@@ -43,7 +45,7 @@ class GroovyClosureExtensionHandlerTest {
   void testCallingClosures() {
     def vars = [:]
 
-    handler.addElementClosure("set-variable") { templateElement, stylesheet, methodKey ->
+    handler.addElementClosure("set-variable") { ElemTemplateElement templateElement, TransformerImpl transformer, Stylesheet stylesheet ->
       vars[templateElement.getAttribute("name")] = templateElement.getAttribute("value")
     }
     handler.addFunctionClosure("variable") { ExpressionContext expressionContext, varName ->
