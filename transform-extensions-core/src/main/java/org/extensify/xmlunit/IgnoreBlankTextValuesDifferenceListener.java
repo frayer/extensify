@@ -10,7 +10,7 @@ import org.w3c.dom.Node;
  * An XMLUnit DifferenceListener which ignores Text Nodes which have blank values. Using this
  * DifferenceListener in your XMLUnit Diff test allows the following two XML examples to be
  * considered similar. Without this, the following two XML examples would be considered
- * different.
+ * different due to the whitespace before and after the <code>person</code>element.
  *
  * example 1:
  * <people>
