@@ -59,8 +59,4 @@ public class ExtensibleXalanTransformerTest {
         verify(wrappedTransformer).getErrorListener();
     }
 
-    @Test
-    public void testTransform() throws Exception {
-        // TODO: implement me!
-    }
 }
