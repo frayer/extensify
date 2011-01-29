@@ -44,7 +44,7 @@ hope to get the point across).  DataPower developers will be familiar with the
     }
 
     transformer.transform(xmlSource, xmlResult)
-    assertThat(expectedXML, equalToXMLResultIgnoringWhitespace(xmlResult)
+    assertThat(expectedXML, equalToXMLResultIgnoringWhitespace(xmlResult))
 
 
 What next
