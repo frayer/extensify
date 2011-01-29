@@ -2,6 +2,7 @@ package org.extensify.transform.xalan.extensions;
 
 import org.apache.xalan.extensions.ExpressionContext;
 import org.apache.xalan.extensions.ExtensionHandler;
+import org.apache.xalan.extensions.XSLProcessorContext;
 import org.apache.xalan.templates.ElemTemplateElement;
 import org.apache.xalan.templates.Stylesheet;
 import org.apache.xalan.transformer.TransformerImpl;
@@ -33,7 +34,12 @@ public abstract class BasicExtensionHandler extends ExtensionHandler {
     @Override
     public void processElement(String elementName, ElemTemplateElement elemTemplateElement, TransformerImpl transformer, Stylesheet stylesheet, Object methodKey) throws TransformerException, IOException {
         CallableExtensionElement callable = getCallableExtensionElement(elementName);
-        callable.call(elemTemplateElement, transformer, stylesheet);
+        Object result  = callable.call(elemTemplateElement, transformer, stylesheet);
+
+        if ((result != null) && (transformer != null) && (stylesheet != null)) {
+            XSLProcessorContext xslProcessorContext = new XSLProcessorContext(transformer, stylesheet);
+            xslProcessorContext.outputToResultTree(stylesheet, result);
+        }
     }
 
     public String getNamespaceUri() {

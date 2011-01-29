@@ -73,6 +73,7 @@ class ClosureExtensibleXalanTransformerTest {
       def name = elemTemplateElement.getAttribute('name')
       def value = elemTemplateElement.getAttribute('value')
       variables[name] = value
+      null
     }
 
     runAndAssertPeopleTransformation(closureTransformer, "people.xml", "people_expected.xml")
@@ -88,6 +89,7 @@ class ClosureExtensibleXalanTransformerTest {
     }
     closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { attributes ->
       variables[attributes['name']] = attributes['value']
+      null
     }
 
     runAndAssertPeopleTransformation(closureTransformer, "people.xml", "people_expected.xml")
@@ -107,11 +109,13 @@ class ClosureExtensibleXalanTransformerTest {
     }
     closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "set-variable") { attributes ->
       variables[attributes['name']] = attributes['value']
+      null
     }
     closureTransformer.addExtensionElement(EXTENSION_TEST_NS, "extension-with-childElement") { attributes, nodeList ->
       extensionWithChildElementNameAttribute = attributes['name']
       extensionWithChildElementValueAttribute = attributes['value']
       extensionWithChildElementNodeList = nodeList
+      null
     }
 
     runAndAssertPeopleTransformation(closureTransformer, "people.xml", "people_expected.xml")
