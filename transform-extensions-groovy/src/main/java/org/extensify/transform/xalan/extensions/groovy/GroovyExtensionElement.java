@@ -46,8 +46,8 @@ public class GroovyExtensionElement implements CallableExtensionElement {
             Map<String, Object> attributeMap = buildAttributeMap(elemTemplateElement);
             return closure.call(attributeMap);
         } else {
-            // TODO: Throw a InvalidClosureParameter Exception here.
-            return null;
+            String message = "The types or number of parameters supplied in the Extension Element Closure were invalid.";
+            throw new InvalidClosureParametersException(message);
         }
     }
 

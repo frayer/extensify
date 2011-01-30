@@ -19,4 +19,23 @@ class GroovyExtensionElementTest {
     assertEquals("closure called", extensionElement.call(null, null, null))
   }
 
+  @Test(expected = InvalidClosureParametersException.class)
+  void testInvalidClosureParametersException_3Parameters() {
+    def invalidClosure = { x, y, z -> null }
+    def extensionElement = new GroovyExtensionElement(invalidClosure)
+
+    extensionElement.call(null, null, null)
+  }
+
+  @Test(expected = InvalidClosureParametersException.class)
+  void testInvalidClosureParametersException_4ParametersOfWrongType() {
+    def invalidClosure = { ElemTemplateElement elemTemplateElement,
+                           TransformerImpl transformer,
+                           Stylesheet stylesheet,
+                           String x -> null }
+    def extensionElement = new GroovyExtensionElement(invalidClosure)
+
+    extensionElement.call(null, null, null)
+  }
+
 }

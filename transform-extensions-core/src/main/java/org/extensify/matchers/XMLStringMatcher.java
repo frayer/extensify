@@ -25,20 +25,25 @@ public class XMLStringMatcher extends TypeSafeMatcher<String> {
     protected boolean matchesSafely(String controlXML) {
         try {
             diff = new Diff(controlXML, testXML);
-            if (differenceListener != null) {
-                diff.overrideDifferenceListener(differenceListener);
-            }
-
-            return diff.similar();
         } catch (SAXException e) {
-            // TODO: Implement exception handler.
-            e.printStackTrace();
+            throw new RuntimeException(buildDiffConstructionErrorMessage(controlXML, testXML), e);
         } catch (IOException e) {
-            // TODO: Implement exception handler.
-            e.printStackTrace();
+            throw new RuntimeException(buildDiffConstructionErrorMessage(controlXML, testXML), e);
         }
 
-        return false;
+        if (differenceListener != null) {
+            diff.overrideDifferenceListener(differenceListener);
+        }
+
+        return diff.similar();
+    }
+
+    private String buildDiffConstructionErrorMessage(String controlXML, String testXML) {
+        StringBuilder message = new StringBuilder("Encountered a SAXException while constructing an XMLUnit Diff object.");
+        message.append("\n    Control XML: ").append(controlXML);
+        message.append("\n    Test XML: ").append(testXML);
+
+        return message.toString();
     }
 
     public void describeTo(Description description) {

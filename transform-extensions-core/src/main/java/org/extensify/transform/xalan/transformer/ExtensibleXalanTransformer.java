@@ -18,10 +18,12 @@ public class ExtensibleXalanTransformer extends Transformer {
 
     public ExtensibleXalanTransformer(TransformerImpl baseTransformer) {
         this.baseTransformer = baseTransformer;
-        extensionHandlerRegistrar = new ExtensionHandlerRegistrar();
     }
 
     public void registerExtensionHandler(String namespaceUri, ExtensionHandler extensionHandler) {
+        if (extensionHandlerRegistrar == null) {
+            extensionHandlerRegistrar = new ExtensionHandlerRegistrar();
+        }
         extensionHandlerRegistrar.registerExtensionHandler(namespaceUri, extensionHandler);
     }
 
@@ -88,4 +90,13 @@ public class ExtensibleXalanTransformer extends Transformer {
     public ErrorListener getErrorListener() {
         return baseTransformer.getErrorListener();
     }
+
+    public ExtensionHandlerRegistrar getExtensionHandlerRegistrar() {
+        return extensionHandlerRegistrar;
+    }
+
+    public void setExtensionHandlerRegistrar(ExtensionHandlerRegistrar extensionHandlerRegistrar) {
+        this.extensionHandlerRegistrar = extensionHandlerRegistrar;
+    }
+
 }
