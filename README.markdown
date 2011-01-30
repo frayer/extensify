@@ -8,7 +8,7 @@ extensify is a suite of Java Libraries which aims to make Unit Testing XSLT tran
 containing custom [XSLT Extensions](http://www.w3.org/TR/xslt#extension) possible. Platforms such as
 [IBM WebSphere DataPower](http://www-01.ibm.com/software/integration/datapower/) take advantage of
 this feature in the XSLT specification and have implemented custom extensions beyond what you would
-find standard XSLT or even [EXSTL](http://www.exslt.org/). While these extensions provide the
+find in standard XSLT or even [EXSTL](http://www.exslt.org/). While these extensions provide the
 ability to perform powerful tasks inside the DataPower appliance, it can cause a lot of pain when
 testing the functionality of your XSLT.
 
@@ -42,7 +42,7 @@ Java ship with a TrAX implementation, extensify uses Xalan 2.7.1 to take advanta
 for defining and implementing XSLT extensions, however they all involve defining the extension in
 the actual stylesheet. This is fine if your production environment will also use Xalan as its XSL
 engine. When your target platform is DataPower however, defining the implementation of an extension
-using Xalan's proprietary approach means you'll have two versions of an XSL. One that works in
+using Xalan's proprietary approach means you'll have two versions of an XSL: one that works in
 Xalan, and one that works in DataPower.
 
 The approach extensify takes is to notify Xalan of extensions through Xalan API calls rather than
