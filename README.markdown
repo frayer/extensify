@@ -37,10 +37,10 @@ How it works
 ------------
 
 extensify uses the Transformation API for XML (TrAX) available in Java. While current versions of
-Java ship with a TrAX implementation, extensify uses Xalan 2.7.1 to take advantage of it's
-[extension features](http://xml.apache.org/xalan-j/extensions.html). Xalan has a variety of options
-for defining and implementing XSLT extensions, however they all involve defining the extension in
-the actual stylesheet. This is fine if your production environment will also use Xalan as its XSL
+Java ship with a TrAX implementation, extensify uses Xalan 2.7.1 to take advantage of its [extension
+features](http://xml.apache.org/xalan-j/extensions.html). Xalan has a variety of options for
+defining and implementing XSLT extensions, however they all involve defining the extension in the
+actual stylesheet. This is fine if your production environment will also use Xalan as its XSL
 engine. When your target platform is DataPower however, defining the implementation of an extension
 using Xalan's proprietary approach means you'll have two versions of an XSL: one that works in
 Xalan, and one that works in DataPower.
