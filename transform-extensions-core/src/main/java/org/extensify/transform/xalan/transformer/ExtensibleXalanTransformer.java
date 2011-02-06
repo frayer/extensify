@@ -6,12 +6,16 @@ import org.apache.xalan.extensions.ExtensionNamespacesManager;
 import org.apache.xalan.transformer.TransformerImpl;
 import org.extensify.transform.xalan.ExtensionHandlerRegistrar;
 import org.extensify.transform.xalan.ExtensionNamespacesManagerUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.transform.*;
 import java.util.Collection;
 import java.util.Properties;
 
 public class ExtensibleXalanTransformer extends Transformer {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExtensibleXalanTransformer.class);
 
     private TransformerImpl baseTransformer = null;
     private ExtensionHandlerRegistrar extensionHandlerRegistrar = null;
@@ -24,6 +28,9 @@ public class ExtensibleXalanTransformer extends Transformer {
         if (extensionHandlerRegistrar == null) {
             extensionHandlerRegistrar = new ExtensionHandlerRegistrar();
         }
+
+        logger.debug("Registering a new ExtensionHandler under the \"{}\" namespace.", namespaceUri);
+
         extensionHandlerRegistrar.registerExtensionHandler(namespaceUri, extensionHandler);
     }
 
