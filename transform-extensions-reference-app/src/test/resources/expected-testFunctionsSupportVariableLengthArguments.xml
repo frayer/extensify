@@ -1,0 +1,7 @@
+<testResults>
+  <testFunctionsSupportVariableLengthArguments>
+    <ext1-concat-1>Hello</ext1-concat-1>
+    <ext1-concat-2>Hello World</ext1-concat-2>
+    <ext1-concat-3>Hello World!</ext1-concat-3>
+  </testFunctionsSupportVariableLengthArguments>
+</testResults>

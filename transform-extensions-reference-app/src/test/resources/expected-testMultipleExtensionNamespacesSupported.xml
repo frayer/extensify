@@ -1,0 +1,8 @@
+<testResults>
+  <testMultipleExtensionNamespacesSupported>
+    <ext1-echo>Hello World from ext1</ext1-echo>
+    <ext2-echo>Hello World from ext2</ext2-echo>
+    <ext1-echo-attributes>Hello World from ext1</ext1-echo-attributes>
+    <ext2-echo-attributes>Hello World from ext2</ext2-echo-attributes>
+  </testMultipleExtensionNamespacesSupported>
+</testResults>
