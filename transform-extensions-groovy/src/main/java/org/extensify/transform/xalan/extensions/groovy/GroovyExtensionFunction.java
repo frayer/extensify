@@ -17,25 +17,17 @@ public class GroovyExtensionFunction implements CallableExtensionFunction {
     }
 
     public Object call(ExpressionContext expressionContext, Object... args) {
-        List<Object> arguments = null;
         Class[] paramTypes = closure.getParameterTypes();
+        List<Object> arguments = new ArrayList<Object>(closure.getMaximumNumberOfParameters());;
+        arguments.addAll(Arrays.asList(args));
 
         /*
          * If the first Closure parameter type is ExpressionContext, then the convention is to pass
-         * this variable in to the closure in addition to all the other arguments passed to the XSL
-         * function.
+         * this variable in to the closure as the first argument in addition to all the other
+         * arguments passed to the XSL function.
          */
         if (paramTypes[0] == ExpressionContext.class) {
-            /*
-             * Create a new argument list with the "expressionContext" variable as the
-             * first argument.
-             */
-            arguments = new ArrayList<Object>(args.length + 1);
-            arguments.addAll(Arrays.asList((args)));
             arguments.add(0, expressionContext);
-        } else {
-            arguments = new ArrayList<Object>(args.length);
-            arguments.addAll(Arrays.asList(args));
         }
 
         return closure.call(arguments.toArray());
