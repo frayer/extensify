@@ -1,0 +1,6 @@
+<testResults>
+  <testExtensionsSupportXSLVariables>
+    <ext1-echo>Hello World from ext1</ext1-echo>
+    <ext2-echo>Hello World from ext2</ext2-echo>
+  </testExtensionsSupportXSLVariables>
+</testResults>
