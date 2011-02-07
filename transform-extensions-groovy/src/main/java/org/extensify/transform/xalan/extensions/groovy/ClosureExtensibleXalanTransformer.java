@@ -4,7 +4,7 @@ import groovy.lang.Closure;
 import org.extensify.transform.xalan.transformer.ExtensibleXalanTransformer;
 import org.apache.xalan.transformer.TransformerImpl;
 
-class ClosureExtensibleXalanTransformer extends ExtensibleXalanTransformer {
+public class ClosureExtensibleXalanTransformer extends ExtensibleXalanTransformer {
 
     public ClosureExtensibleXalanTransformer(TransformerImpl baseTransformer) {
         super(baseTransformer);
