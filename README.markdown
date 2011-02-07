@@ -89,6 +89,7 @@ What next
 ---------
 
 There will be more user documentation added to the Wiki. In the meantime, your best source of
-examples are in the Unit Tests of the `transform-extensions-groovy` module.
+examples are in the Unit Tests of the `transform-extensions-groovy` module and the
+`transform-extensions-reference-app` reference project.
 
 Stay tuned for more.
