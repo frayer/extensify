@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Test that more than one extension namespace is supported in a single XSLT.
+  Test that extension functions can take a variable number of arguments.
 -->
 <xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

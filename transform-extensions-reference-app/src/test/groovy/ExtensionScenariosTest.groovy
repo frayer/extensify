@@ -104,7 +104,10 @@ class ExtensionScenariosTest {
     
     runAndAssertTransformation(closureTransformer, '/people-input.xml', '/expected-testExtensionsSupportXSLVariables.xml')
   }
-  
+
+  /**
+   * Test that extension functions can take a variable number of arguments.
+   */
   @Test
   void testFunctionsSupportVariableLengthArguments() {
     def closureTransformer = createTransformer('/testFunctionsSupportVariableLengthArguments.xsl')
