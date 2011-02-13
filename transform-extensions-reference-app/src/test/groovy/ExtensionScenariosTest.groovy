@@ -228,4 +228,25 @@ class ExtensionScenariosTest {
     runAndAssertTransformation(closureTransformer, '/people-input.xml', '/expected-testNodeSetParameterBecomesDOMObject.xml')
   }
 
+  @Test
+  void testXalanClassesConvertToStandardClasses() {
+    def closureTransformer = createTransformer('/testXalanClassesConvertToStandardClasses.xsl')
+
+    closureTransformer.addExtensionFunction(EXT1_NS, 'expect-string') { String stringValue ->
+      assertTrue stringValue instanceof String
+      return "$stringValue from extension function"
+    }
+
+    closureTransformer.addExtensionFunction(EXT1_NS, 'expect-integer') { int numberValue ->
+      return "${numberValue} from extension function"
+    }
+    
+    closureTransformer.addExtensionFunction(EXT1_NS, 'expect-boolean') { Boolean booleanValue ->
+      assertTrue booleanValue instanceof Boolean
+      return "${booleanValue.toString()} from extension function"
+    }
+
+    runAndAssertTransformation(closureTransformer, '/people-input.xml', '/expected-testXalanClassesConvertToStandardClasses.xml')
+  }
+
 }

@@ -1,0 +1,6 @@
+<testResults>
+    <firstPersonName>Foo from extension function</firstPersonName>
+    <numberOfPeople>2 from extension function</numberOfPeople>
+    <trueValue>true from extension function</trueValue>
+    <falseValue>false from extension function</falseValue>
+</testResults>
