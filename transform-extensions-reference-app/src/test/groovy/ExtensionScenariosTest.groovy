@@ -3,17 +3,12 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
 import org.apache.commons.io.IOUtils
-import org.apache.xalan.extensions.ExpressionContext
-import org.apache.xalan.templates.ElemTemplateElement
-import org.apache.xalan.templates.Stylesheet
-import org.apache.xalan.transformer.TransformerImpl
+import org.extensify.transform.xalan.extensions.groovy.ClosureExtensibleXalanTransformer
 import org.junit.Before
 import org.junit.Test
-import org.w3c.dom.Node
-import org.w3c.dom.NodeList
-import org.extensify.transform.xalan.extensions.groovy.ClosureExtensibleXalanTransformer
-import static junit.framework.Assert.assertEquals
-import static junit.framework.Assert.assertNotNull
+import org.w3c.dom.Element
+import org.w3c.dom.traversal.NodeIterator
+import static junit.framework.Assert.assertTrue
 import static org.extensify.matchers.XMLStringMatcher.equalToXMLStringIgnoringWhitespace
 import static org.hamcrest.MatcherAssert.assertThat
 
@@ -111,7 +106,6 @@ class ExtensionScenariosTest {
   @Test
   void testFunctionsSupportVariableLengthArguments() {
     def closureTransformer = createTransformer('/testFunctionsSupportVariableLengthArguments.xsl')
-    def variables = [:]
     
     /*
      * Extension Functions with optional parameters MUST be defined with a
@@ -122,6 +116,116 @@ class ExtensionScenariosTest {
     }
     
     runAndAssertTransformation(closureTransformer, '/people-input.xml', '/expected-testFunctionsSupportVariableLengthArguments.xml')
+  }
+
+  @Test
+  void testNodeSetParameterBecomesNodeIterator() {
+    def closureTransformer = createTransformer('/testNodeSetParameterBecomesDOMObject.xsl')
+
+    /*
+     * By default, when an XSLT Node Set is passed as an argument to an
+     * extension function, that argument is converted to a org.w3c.dom.traversal.NodeIterator
+     * type before being passed to the Closure if the Closure parameter has no
+     * type definition.
+     */
+    closureTransformer.addExtensionFunction(EXT1_NS, 'first-names-by-person') { personNodeIterator ->
+      assertTrue personNodeIterator instanceof NodeIterator
+
+      def firstNames = []
+      Element person
+      while (person = personNodeIterator.nextNode()) {
+        /*
+         * The following JAXP syntax can be used to gain access to the text
+         * value of the "person/firstName" element.
+         */
+        // firstNames << person.getElementsByTagName("firstName").item(0).childNodes.item(0).textContent
+
+        /*
+         * The following syntax takes advantage of the DOMCategory Groovy
+         * Category which makes working with the DOM a little easier.
+         */
+        use (groovy.xml.dom.DOMCategory) {
+          firstNames << person.firstName.text()
+        }
+      }
+
+      return firstNames.join(', ')
+    }
+
+    /*
+     * By default, when an XSLT Node Set is passed as an argument to an
+     * extension function, that argument is converted to a org.w3c.dom.traversal.NodeIterator
+     * type before being passed to the Closure if the Closure parameter has no
+     * type definition.
+     */
+    closureTransformer.addExtensionFunction(EXT1_NS, 'last-names') { lastNameNodeIterator ->
+      assertTrue lastNameNodeIterator instanceof NodeIterator
+
+      def lastNames = []
+      Element lastName
+      while (lastName = lastNameNodeIterator.nextNode()) {
+        /*
+         * The following JAXP syntax can be used to gain access to the text
+         * value of the "lastName" element.
+         */
+        // lastNames << lastName.childNodes.item(0).textContent
+
+        /*
+         * The following syntax takes advantage of the DOMCategory Groovy
+         * Category which makes working with the DOM a little easier.
+         */
+        use (groovy.xml.dom.DOMCategory) {
+          lastNames << lastName.text()
+        }
+      }
+
+      return lastNames.join(', ')
+    }
+
+    runAndAssertTransformation(closureTransformer, '/people-input.xml', '/expected-testNodeSetParameterBecomesDOMObject.xml')
+  }
+
+  @Test
+  void testNodeSetParameterBecomesNodeList() {
+    def closureTransformer = createTransformer('/testNodeSetParameterBecomesDOMObject.xsl')
+
+    /*
+     * If an XSLT Node Set is passed as an argument to an extension function,
+     * that argument is converted to a "org.w3c.dom.NodeList" type before being
+     * passed to the Closure if the Closure parameter is also defined as a
+     * "org.w3c.dom.NodeList" type.
+     */
+    closureTransformer.addExtensionFunction(EXT1_NS, 'first-names-by-person') { org.w3c.dom.NodeList personNodeList ->
+      assertTrue personNodeList instanceof org.w3c.dom.NodeList
+
+      def firstNames = []
+      for (Element person : personNodeList) {
+        use (groovy.xml.dom.DOMCategory) {
+          firstNames << person.firstName.text()
+        }
+      }
+      return firstNames.join(', ')
+    }
+
+    /*
+     * If an XSLT Node Set is passed as an argument to an extension function,
+     * that argument is converted to a "org.w3c.dom.NodeList" type before being
+     * passed to the Closure if the Closure parameter is also defined as a
+     * "org.w3c.dom.NodeList" type.
+     */
+    closureTransformer.addExtensionFunction(EXT1_NS, 'last-names') { org.w3c.dom.NodeList lastNameNodeList ->
+      assertTrue lastNameNodeList instanceof org.w3c.dom.NodeList
+
+      def lastNames = []
+      for (Element lastName : lastNameNodeList) {
+        use (groovy.xml.dom.DOMCategory) {
+          lastNames << lastName.text()
+        }
+      }
+      return lastNames.join(', ')
+    }
+
+    runAndAssertTransformation(closureTransformer, '/people-input.xml', '/expected-testNodeSetParameterBecomesDOMObject.xml')
   }
 
 }

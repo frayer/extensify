@@ -1,0 +1,6 @@
+<testResults>
+    <testNodeSetParameterBecomesNodeIterator>
+        <firstNames>Foo, Buddy</firstNames>
+        <lastNames>Bar, Lee</lastNames>
+    </testNodeSetParameterBecomesNodeIterator>
+</testResults>
