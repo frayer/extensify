@@ -1,8 +1,12 @@
-extensify
-=========
+# extensify
 
-Overview
---------
+## Archive Notice
+
+I archived this repository on March 26, 2024 as part of some repository
+cleanup. Feel free to contact me if anyone decides to fork and carry this
+forward and I'd be happy to give a shoutout in this README.
+
+## Overview
 
 extensify is a suite of Java Libraries which aims to make Unit Testing XSLT transformations
 containing custom [XSLT Extensions](http://www.w3.org/TR/xslt#extension) possible. Platforms such as
@@ -33,8 +37,7 @@ addition to providing the ability to stub out XSLT extensions, this project cont
 Matchers](http://code.google.com/p/hamcrest/) and [XMLUnit](http://xmlunit.sourceforge.net/)
 Difference Listeners which come in handy when comparing expected XML messages against each other.
 
-How it works
-------------
+## How it works
 
 extensify uses the Transformation API for XML (TrAX) available in Java. While current versions of
 Java ship with a TrAX implementation, extensify uses Xalan 2.7.1 to take advantage of its [extension
@@ -84,12 +87,3 @@ The XSLT document which would invoke either of these closures might look like th
     	  </name>
     	</xsl:template>
     </xsl:stylesheet>
-
-What next
----------
-
-There will be more user documentation added to the Wiki. In the meantime, your best source of
-examples are in the Unit Tests of the `transform-extensions-groovy` module and the
-`transform-extensions-reference-app` reference project.
-
-Stay tuned for more.
